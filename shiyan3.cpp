@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 using namespace std;
-#define NUM 8
+#define NUM 4
 #define TIME 5
 struct PCB
 {
@@ -42,7 +42,6 @@ void createPCB(_PCB &tail,_PCB &top)
 			tail = temp;
 		}
 	}
-	tail = top;
 }
 void printPCB(_PCB top)
 {
@@ -58,17 +57,49 @@ void printPCB(_PCB top)
 	}
 	
 }
-void run(_PCB &top,_PCB &runqueue)
+void run(_PCB &top,_PCB &runqueue,_PCB &tail)
 {
-	runqueue = top;
-	top = top->next;
-	runqueue -> runtime = run
+//	temp = top;
+//	temp -> next = runqueue -> next;
+	while(top)
+	{
+		runqueue = top;
+		top = top->next;
+		runqueue -> next = NULL;
+		runqueue -> runtime -=TIME;
+		runqueue -> runedtime += TIME;
+		runqueue -> killtime = TIME;
+		if( runqueue->runtime <= 0)
+		{
+		cout<<"*"<<"process name:"<<runqueue -> name
+				<<" runtime="<<runqueue -> runtime
+				<<" runedtime="<<runqueue -> runedtime
+				<<" killtime="<<runqueue -> killtime<<endl;
+	 	}
+		else
+	 	{
+			cout<<"-"<<"process name:"<<runqueue -> name
+				<<" runtime="<<runqueue -> runtime
+				<<" runedtime="<<runqueue -> runedtime
+				<<" killtime="<<runqueue -> killtime<<endl;
+
+			//temp = runqueue;
+			//temp -> next = tail->next;
+			tail ->next = runqueue;
+			tail = runqueue;
+		}
+	}
 }
 int main()
 {
 	_PCB runqueue;
 	_PCB tail,top;
+	_PCB temp;
+	runqueue = new _pcb;
+	cout<<"No.1510431010\n";
+//	runqueue -> next = NULL;
 	createPCB(tail,top);
-	printPCB(tail);
+	printPCB(top);
+		run(top,runqueue,tail);
 	return 0;
 }
